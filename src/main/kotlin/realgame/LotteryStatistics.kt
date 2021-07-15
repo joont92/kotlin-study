@@ -46,7 +46,7 @@ class LotteryStatistics {
             2등 : (현재 미구현)
             1등 : ${no1}
             
-            총 수익률 : ${accumulatedWinningAmount / (accumulatedCount * 1000) * 100}%
+            총 수익률 : ${(accumulatedWinningAmount.toDouble() / (accumulatedCount * 1000).toDouble()) * 100}%
         """.trimIndent())
     }
 }

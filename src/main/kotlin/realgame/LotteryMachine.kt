@@ -1,18 +1,36 @@
 package realgame
 
-fun createLotteries(money: Money): List<Lottery> {
-    val list: ArrayList<Lottery> = arrayListOf()
+import java.util.*
+import kotlin.collections.ArrayList
 
-    val count = money divide 1000
+object LotteryMachine {
+    fun createLotteries(money: Money, vararg manualNumbers: IntArray = emptyArray()): List<Lottery> {
+        val list: ArrayList<Lottery> = arrayListOf()
 
-    for (i in 1..count) {
-        list.add(Lottery().init())
+        val count = (money divide 1000) - manualNumbers.size
+
+        for (numbers in manualNumbers) {
+            list.add(Lottery.manual(*numbers))
+        }
+        for (i in 1..count) {
+            list.add(Lottery.auto(RandomNumberGenerator(Lottery.LOTTERY_MAX_NUMBER)))
+        }
+
+        return list
     }
 
-    return list
-}
+    fun createWinningLottery(): Lottery {
+        val winningLottery = Lottery.auto(
+            object : NumberGenerator {
+                override fun generateNumber() =
+                    (0..Lottery.LOTTERY_MAX_NUMBER).random()
+            }
+        )
+        println("당첨번호 : ${winningLottery}")
 
-fun createWinningLottery(): Lottery = Lottery().init()
+        return winningLottery
+    }
+}
 
 fun Collection<Lottery>.checkResult(winningLottery: Lottery): LotteryStatistics {
     val statistics = LotteryStatistics()

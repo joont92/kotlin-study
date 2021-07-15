@@ -20,3 +20,9 @@ fun <T> Collection<T>.join(
 
     return sb.toString()
 }
+
+class ExtendedList<T> (
+    val innerList: List<T>
+): List<T> by innerList {
+    fun intersectSize(list: List<T>) = innerList.intersect(list).size
+}

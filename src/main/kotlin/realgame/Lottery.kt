@@ -1,30 +1,44 @@
 package realgame
 
-import java.util.*
-import kotlin.collections.ArrayList
+import java.lang.IllegalArgumentException
 
-class Lottery {
-    private val LOTTERY_COUNT: Int = 6
-    private val LOTTERY_MAX_NUMBER: Int = 45
-    private val numbers: ArrayList<Int> = arrayListOf()
-
-    fun init(): Lottery {
-        for (i in 1..LOTTERY_COUNT) {
-            var randomNumber = Random().nextInt(LOTTERY_MAX_NUMBER) + 1
-            while (numbers.contains(randomNumber)) {
-               randomNumber = Random().nextInt(LOTTERY_MAX_NUMBER) + 1
-            }
-            numbers.add(randomNumber)
-        }
-
-        return this
+class Lottery private constructor(private val type: Type, private val numbers: ExtendedList<Int>) {
+    init {
+        println("${type.value} : ${this}")
     }
 
     fun equalsCount(lottery: Lottery): Int {
-        val copied: ArrayList<Int> = ArrayList(numbers)
-        copied.removeAll(lottery.numbers)
-        return copied.size
+        return numbers.intersectSize(lottery.numbers)
     }
 
     override fun toString() = numbers.toEnumeratedString()
+
+    companion object {
+        val LOTTERY_COUNT: Int = 6
+        val LOTTERY_MAX_NUMBER: Int = 45
+
+        fun auto(generator: NumberGenerator): Lottery {
+            val numbers: ArrayList<Int> = arrayListOf()
+            for (i in 1..LOTTERY_COUNT) {
+                var randomNumber = generator.generateNumber() + 1
+                while (numbers.contains(randomNumber)) {
+                    randomNumber = generator.generateNumber() + 1
+                }
+                numbers.add(randomNumber)
+            }
+
+            return Lottery(Type.AUTO, ExtendedList(numbers))
+        }
+
+        fun manual(vararg numberArgs: Int): Lottery {
+            if (numberArgs.distinct().size != LOTTERY_COUNT)
+                throw IllegalArgumentException("Need to pick numbers at least ${LOTTERY_COUNT}")
+
+            return Lottery(Type.MANUAL, ExtendedList(numberArgs.toList()))
+        }
+    }
+
+    enum class Type(val value: String) {
+        AUTO("자동"), MANUAL("수동")
+    }
 }
