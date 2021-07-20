@@ -17,6 +17,8 @@ fun main() {
     println(v1 == v2)
 
     CompanionUser.newFacebookUser(1)
+
+    Student3("joont:30")
 }
 
 interface Clickable {
@@ -100,6 +102,16 @@ class Student2 {
 
     init {
         println("test")
+    }
+}
+
+class Student3 private constructor(val name: String, val age: Int) {
+    constructor(fullString: String): this(
+        fullString.substringBefore(":"),
+        fullString.substringAfter(":").toInt())
+
+    init {
+        println("name: ${name}, age: ${age}")
     }
 }
 

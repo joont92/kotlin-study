@@ -1,42 +1,46 @@
 package realgame
 
-import java.util.*
-import kotlin.collections.ArrayList
-
 object LotteryMachine {
+    val statisticsCreator = ::LotteryStatistics // () -> LotteryStatistics
+
     fun createLotteries(money: Money, vararg manualNumbers: IntArray = emptyArray()): List<Lottery> {
-        val list: ArrayList<Lottery> = arrayListOf()
+        val list: List<Lottery> = listOf()
 
         val count = (money divide 1000) - manualNumbers.size
 
         for (numbers in manualNumbers) {
-            list.add(Lottery.manual(*numbers))
+            list.plus(Lottery.manual(*numbers))
         }
         for (i in 1..count) {
-            list.add(Lottery.auto(RandomNumberGenerator(Lottery.LOTTERY_MAX_NUMBER)))
+            list.plus(Lottery.auto { min, max -> (min..max).random() } )
         }
 
         return list
     }
 
-    fun createWinningLottery(): Lottery {
-        val winningLottery = Lottery.auto(
-            object : NumberGenerator {
-                override fun generateNumber() =
-                    (0..Lottery.LOTTERY_MAX_NUMBER).random()
-            }
-        )
+    fun createWinningLottery(lotteries: List<Lottery>): Lottery {
+        val winningLottery = Lottery.manual(
+            *lotteries.lowFrequencyNumbers(Lottery.LOTTERY_COUNT).toIntArray())
         println("당첨번호 : ${winningLottery}")
 
         return winningLottery
     }
 }
 
-fun Collection<Lottery>.checkResult(winningLottery: Lottery): LotteryStatistics {
-    val statistics = LotteryStatistics()
+fun List<Lottery>.lowFrequencyNumbers(size: Int) =
+    this.flatMap(Lottery::numbers)
+        .groupingBy { it }
+        .eachCount()
+        .toList()
+        .sortedByDescending { it.second }
+        .map { it.first }
+        .take(size)
 
-    for (lottery in this) {
-        statistics.addResult(lottery.equalsCount(winningLottery))
-    }
+fun Collection<Lottery>.checkResult(winningLottery: Lottery): LotteryStatistics {
+    val statistics = LotteryMachine.statisticsCreator()
+
+    this.map { it.equalsCount(winningLottery) }
+        .forEach { statistics.addResult(it) }
+
     return statistics
 }

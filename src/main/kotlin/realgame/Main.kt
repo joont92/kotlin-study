@@ -13,7 +13,7 @@ fun main() {
     )
 
     // 당첨 번호
-    val winningLottery = LotteryMachine.createWinningLottery()
+    val winningLottery = LotteryMachine.createWinningLottery(lotteries)
 
     val statistics = lotteries.checkResult(winningLottery)
     statistics.showResult()

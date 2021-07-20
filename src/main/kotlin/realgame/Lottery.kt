@@ -2,7 +2,10 @@ package realgame
 
 import java.lang.IllegalArgumentException
 
-class Lottery private constructor(private val type: Type, private val numbers: ExtendedList<Int>) {
+class Lottery(private val type: Type, _numbers: ExtendedList<Int>) {
+    val numbers: ExtendedList<Int> = _numbers
+        get() = field.copy()
+
     init {
         println("${type.value} : ${this}")
     }
@@ -15,14 +18,15 @@ class Lottery private constructor(private val type: Type, private val numbers: E
 
     companion object {
         val LOTTERY_COUNT: Int = 6
+        val LOTTERY_MIN_NUMBER: Int = 1
         val LOTTERY_MAX_NUMBER: Int = 45
 
-        fun auto(generator: NumberGenerator): Lottery {
+        fun auto(generator: (Int, Int) -> (Int)): Lottery {
             val numbers: ArrayList<Int> = arrayListOf()
             for (i in 1..LOTTERY_COUNT) {
-                var randomNumber = generator.generateNumber() + 1
+                var randomNumber = generator(LOTTERY_MIN_NUMBER, LOTTERY_MAX_NUMBER)
                 while (numbers.contains(randomNumber)) {
-                    randomNumber = generator.generateNumber() + 1
+                    randomNumber = generator(LOTTERY_MIN_NUMBER, LOTTERY_MAX_NUMBER)
                 }
                 numbers.add(randomNumber)
             }
