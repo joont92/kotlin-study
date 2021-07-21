@@ -13,7 +13,7 @@ class LotteryStatistics {
         totalCount++
         resultMap.keys
             .find { it == LotteryReward.findByCount(correctCount) }
-            ?.let { resultMap[it] = resultMap[it]?.plus(1) ?: 0 }
+            ?.let { resultMap[it] = resultMap[it]?.plus(1) ?: 0 } // 3 -> 5등 -> 5등 값+1 == 5등 1개 당첨
 
         return this
     }

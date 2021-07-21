@@ -2,7 +2,7 @@ package realgame
 
 import java.lang.IllegalArgumentException
 
-class Lottery(private val type: Type, _numbers: ExtendedList<Int>) {
+class Lottery private constructor(private val type: Type, _numbers: ExtendedList<Int>) {
     val numbers: ExtendedList<Int> = _numbers
         get() = field.copy()
 
@@ -35,8 +35,9 @@ class Lottery(private val type: Type, _numbers: ExtendedList<Int>) {
         }
 
         fun manual(vararg numberArgs: Int): Lottery {
-            if (numberArgs.distinct().size != LOTTERY_COUNT)
-                throw IllegalArgumentException("Need to pick numbers at least ${LOTTERY_COUNT}")
+            val numberArgsSize = numberArgs.distinct().size
+            if (numberArgsSize != LOTTERY_COUNT)
+                throw IllegalArgumentException("Need to pick numbers at least ${numberArgsSize}")
 
             return Lottery(Type.MANUAL, ExtendedList(numberArgs.toList()))
         }
