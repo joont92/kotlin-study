@@ -1,4 +1,4 @@
-package realgame
+package lottery
 
 class Money(amount: Int) {
     var value = amount

@@ -1,4 +1,4 @@
-package realgame
+package lottery
 
 /**
  * 확장함수

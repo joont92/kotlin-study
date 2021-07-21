@@ -1,4 +1,4 @@
-package practice.chapter4
+package book.chapter4
 
 fun main() {
     Button().showOff()

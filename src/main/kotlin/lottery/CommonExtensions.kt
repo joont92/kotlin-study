@@ -1,4 +1,4 @@
-package realgame
+package lottery
 
 fun <T> Collection<T>.toEnumeratedString() = this.join(",", "[", "]")
 

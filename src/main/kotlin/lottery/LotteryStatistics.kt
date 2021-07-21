@@ -1,4 +1,4 @@
-package realgame
+package lottery
 
 class LotteryStatistics {
     private var totalCount = 0

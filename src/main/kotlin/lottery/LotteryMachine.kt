@@ -1,4 +1,4 @@
-package realgame
+package lottery
 
 object LotteryMachine {
     val statisticsCreator = ::LotteryStatistics // == () -> LotteryStatistics

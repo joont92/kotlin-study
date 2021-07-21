@@ -1,4 +1,4 @@
-package realgame
+package lottery
 
 import java.lang.IllegalArgumentException
 

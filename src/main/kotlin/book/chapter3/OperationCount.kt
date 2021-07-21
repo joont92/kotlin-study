@@ -1,4 +1,4 @@
-package practice.chapter3
+package book.chapter3
 
 var opCount = 0
 

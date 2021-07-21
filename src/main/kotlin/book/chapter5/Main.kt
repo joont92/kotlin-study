@@ -1,4 +1,4 @@
-package practice.chapter5
+package book.chapter5
 
 fun main() {
     val sum = { x: Int, y: Int -> x + y}

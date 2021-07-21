@@ -1,4 +1,4 @@
-package practice.chapter3
+package book.chapter3
 
 fun main() {
     val set = setOf(1, 2, 3) // == LinkedHashSet(linkedSetOf)

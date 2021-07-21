@@ -1,4 +1,4 @@
-package realgame
+package lottery
 
 fun main() {
     // 구입 금액

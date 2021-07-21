@@ -1,4 +1,4 @@
-package practice.chapter3
+package book.chapter3
 
 import java.lang.StringBuilder
 
