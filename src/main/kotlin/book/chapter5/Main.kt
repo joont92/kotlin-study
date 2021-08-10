@@ -46,6 +46,37 @@ fun main() {
     personLambda2(::Person)
     val p = Person("joont", 10)
     personLambda3(p::age)
+
+    val listAsSequence = listOf("A", "B", "C", "D", "E")
+
+    listAsSequence.asSequence()
+        .filter { println("filtered"); it.toCharArray()[0].code % 2 == 0 }
+        .map { println("mapped"); it.plus("added") }
+        .toList() // filter + map -> filter + map -> filter + map ...
+
+    val naturalNumbers = generateSequence(0) { it + 1 }
+        val numbersTo100 = naturalNumbers.filter { it % 2 == 0 }.takeWhile { it <= 100 }
+    println(numbersTo100.sum())
+
+    println(alphabet())
+    println(alphabet2())
+    println(alphabet3())
+    println(alphabet4())
+
+    println(receiverLambdaTest(10) { toString() })
+    println(10.receiverLambdaTest2 { toString() })
+}
+
+class Foo(val bar: String) {
+    override fun equals(other: Any?): Boolean {
+        if (other is Foo && other == this) {
+            return true
+        }
+        return true
+    }
+}
+fun sendMail(foo: Foo) {
+    println("sent")
 }
 
 fun lambda(): () -> Int {
@@ -59,14 +90,49 @@ fun test(param: (Int) -> Int) {
 
 class Person(val name: String, val age: Int)
 
-fun personLambda1(exp: (Person) -> Int) {
+fun personLambda1(exp: (Person) -> Int) { }
 
+fun personLambda2(exp: (String, Int) -> Person) { }
+
+fun personLambda3(exp: () -> Int) { }
+
+fun alphabet(): String {
+    val result = StringBuilder()
+    for (letter in 'A'..'Z') {
+        result.append(letter)
+    }
+    result.append("\nNow I know the alphabet!")
+    return result.toString()
 }
 
-fun personLambda2(exp: (String, Int) -> Person) {
+fun alphabet2(): String {
+    return with(StringBuilder()) {
+        for (letter in 'A'..'Z') {
+            append(letter)
+        }
+        append("\nNow I know the alphabet!")
 
+        toString()
+    }
 }
 
-fun personLambda3(exp: () -> Int) {
-
+fun alphabet3(): String {
+    return StringBuilder().apply {
+        for (letter in 'A'..'Z') {
+            append(letter)
+        }
+        append("\nNow I know the alphabet!")
+    }.toString()
 }
+
+fun alphabet4(): String {
+    return buildString {
+        for (letter in 'A'..'Z') {
+            append(letter)
+        }
+        append("\nNow I know the alphabet!")
+    }
+}
+
+fun receiverLambdaTest(number: Int, block: Int.() -> String): String = number.block()
+fun Int.receiverLambdaTest2(block: Int.() -> String): String = block()

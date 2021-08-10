@@ -26,13 +26,16 @@ fun main() {
     println("12.345-6.A".split("."))
 //    println("12.345-6.A".split(".", "-"))
 
-    val (a, b, c) = Destructed("1", 2, 3.0)
+    val (a1, b1, c1) = Destructed("1", 2, 3.0)
 
-    println("""
+    val testString = """
+        testtttesttttesttttesttttesttttesttttesttttesttttesttttesttttesttttesttttesttttesttttesttttesttttesttttesttt
+        testtesttttesttttesttttesttttesttttesttttesttttesttt
         test
-            test
-                test
-    """.trimMargin("t"))
+    """
+    println(testString.trimIndent())
+    println(testString.trimMargin())
+    println(testString.trimIndent().replace("\n",""))
 }
 
 class TestClass {
