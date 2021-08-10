@@ -1,6 +1,9 @@
 package book.charter6
 
 import book.chapter5.Foo
+import java.lang.IllegalArgumentException
+import java.lang.IllegalStateException
+import java.lang.RuntimeException
 
 fun main() {
     val foo: Foo? = null
@@ -16,6 +19,7 @@ fun main() {
 
     unitLambda1 { 10 }
     unitLambda2 { 10 }
+    unitLambda3 { println(it) }
 
     var person: Person? = Person("test", 10)
     person.createOrUpdate("test1", 11)
@@ -33,6 +37,12 @@ fun main() {
     println(squares.joinToString(" "))
 
     arrayOf("A","B","C").forEachIndexed { index, element -> println("${index}: ${element}")}
+
+    listOf(1,2,3) // readonly
+    setOf(1,2,3) // readonly
+    mutableListOf(1,2,3)
+    arrayListOf(1,2,3)
+    hashSetOf(1,2,3)
 }
 
 class Person(var name: String, var age: Int)
@@ -46,6 +56,21 @@ fun Person?.createOrUpdate(name:String, age: Int) =
 
 fun unitLambda1(func: () -> Int) {}
 fun unitLambda2(func: (Unit) -> Int) {}
+fun unitLambda3(func: (Int) -> Unit) {}
+
+fun nothing(type: String): Nothing {
+    if(type == "1") {
+        throw IllegalArgumentException()
+    } else if (type =="2") {
+        throw IllegalStateException()
+    } else {
+        throw RuntimeException()
+    }
+}
+
+fun fail() {
+    throw IllegalStateException(Thread.currentThread().name)
+}
 
 fun <T> printHashCode(t: T) =
     t?.hashCode()
@@ -56,14 +81,21 @@ fun <T: Any> printHashCode(t: T) =
 interface SomeInterface<T> {
     fun returnSomething(): T
 }
-class SomeConcrete1: SomeInterface<Unit> {
-    override fun returnSomething() {
-        TODO("Not yet implemented")
+class SomeConcrete1: SomeInterface<Int> {
+    override fun returnSomething(): Int {
+        TODO("Not yet implemented") // 값 반환
     }
 }
-class SomeConcrete2: SomeInterface<Int> {
-    override fun returnSomething(): Int {
-        TODO("Not yet implemented")
+
+class SomeConcrete2: SomeInterface<Unit> {
+    override fun returnSomething() {
+        TODO("Not yet implemented") // 값 반환 X
+    }
+}
+
+class SomeConcrete3: SomeInterface<Nothing> {
+    override fun returnSomething(): Nothing {
+        TODO("Not yet implemented") // exception
     }
 }
 

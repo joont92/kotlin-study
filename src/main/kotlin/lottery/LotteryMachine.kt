@@ -25,6 +25,15 @@ object LotteryMachine {
 
         return winningLottery
     }
+
+    fun createBonusLotteryNumber(lotteries: List<Lottery>) =
+        lotteries.flatMap { it.numbers }
+            .groupBy { it }
+            .mapValues { it.value.size }
+            .toList()
+            .sortedByDescending { it.second }
+            .map { it.first }
+            .first()
 }
 
 fun List<Lottery>.maxFrequencyNumbers(size: Int): List<Int> =
@@ -34,6 +43,7 @@ fun List<Lottery>.maxFrequencyNumbers(size: Int): List<Int> =
         .toList() // (Pair(1,3), Pair(2,3), Pair(3,4)...)
         .sortedByDescending { it.second } // Pair(3,4), Pair(1,3), Pair(2,3)...
         .map { it.first } // 3,1,2....
+        .map { it.number }
         .take(size) // 6개만!
 
 fun Collection<Lottery>.checkResult(winningLottery: Lottery): LotteryStatistics {

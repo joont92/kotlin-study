@@ -7,7 +7,7 @@ class LotteryStatistics {
     )
 
     fun addResult(correctCount: Int): LotteryStatistics {
-        if (correctCount < Lottery.LOTTERY_MIN_NUMBER - 1 || correctCount > Lottery.LOTTERY_MAX_NUMBER)
+        if (correctCount < LotteryNumber.LOTTERY_MIN_NUMBER - 1 || correctCount > LotteryNumber.LOTTERY_MAX_NUMBER)
             throw IllegalArgumentException("Lottery number should be in 1~6 (correctCount : ${correctCount})")
 
         totalCount++
