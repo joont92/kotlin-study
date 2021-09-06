@@ -1,4 +1,4 @@
-package book.charter6
+package book.chapter6
 
 import book.chapter5.Foo
 import java.lang.IllegalArgumentException
